@@ -1,5 +1,14 @@
 == Rails3 fullcalendar example
 
+
+=== Coffeescript branch
+Update: I wanted a simple example of using barrista to compile coffeescript into javascript, so I repurposed my rails3 fullcalendar.  As it turns out, this is a pretty good sample project for that.  Its pretty trivial, but it shows the barrista integration, the compilation of the coffeescript, and enough syntax to demonstrate using jQuery, callbacks, and a few data structures.
+
+Its not perfect though - the coffeescript needs to be more idiomatic.
+
+
+
+
 This is an example application showing how to use the JQuery FullCalendar plugin with Rails3, following RESTful rails practices as closely as possible, and forgoing 'cleverness' for clarity.
 
 http://arshaw.com/fullcalendar/

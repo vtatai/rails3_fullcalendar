@@ -4,3 +4,4 @@ db/schema.rb
 log/*.log
 tmp/
 vendor/ruby
+public/javascripts/calendar.js
