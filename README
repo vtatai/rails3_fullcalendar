@@ -8,6 +8,8 @@ Its not perfect though - the coffeescript needs to be more idiomatic.
 
 Also, the javascript is currently untested...  I'm not sure what the testing story should be for coffeescript - Contributions are desired - I'll accept your pullup requests!
 
+I think the best way to test this would be with Jasmine; I'm not sure if barista would recompile the coffeescript with the jasmine:ci rake command, or whether that is a contribution back to barista/jasmine thats waiting to happen.  I'm *also* not sure of the best way to hit the javascript with a jasmine test - should I mock out the .ajax call so it doesn't require the server, and somehow simulate the drag and drop / resize on the fullcalendar events?  If a reader wants to take that on, this app is small enough to make and excellent example of! 
+
 
 
 
