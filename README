@@ -6,6 +6,8 @@ Update: I wanted a simple example of using barrista to compile coffeescript into
 
 Its not perfect though - the coffeescript needs to be more idiomatic.
 
+Also, the javascript is currently untested...  I'm not sure what the testing story should be for coffeescript - Contributions are desired - I'll accept your pullup requests!
+
 
 
 
