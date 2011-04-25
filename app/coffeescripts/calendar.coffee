@@ -1,25 +1,24 @@
-$(document).ready ->
-	
-	$('#calendar').fullCalendar
-	  editable: true,        
-	  header:
+$(document).ready ->	
+  $('#calendar').fullCalendar
+    editable: true,        
+    header:
       left: 'prev,next today',
       center: 'title',
       right: 'month,agendaWeek,agendaDay'
-      defaultView: 'month',
-      height: 500,
-      slotMinutes: 15,
-        
+    defaultView: 'month',
+    height: 500,
+    slotMinutes: 15,
+      
     eventSources: [{
       url: '/events',
       color: 'yellow',
       textColor: 'black',
       ignoreTimezone: false
     }],
-        
+      
     timeFormat: 'h:mm t{ - h:mm t} ',
     dragOpacity: "0.5"
-    
+  
     eventDrop: (event, dayDelta, minuteDelta, allDay, revertFunc) ->
       updateEvent(event);
 
