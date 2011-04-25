@@ -1,9 +1,4 @@
 $(document).ready ->
-
-	date = new Date()
-	d = date.getDate()
-	m = date.getMonth()
-	y = date.getFullYear()
 	
 	$('#calendar').fullCalendar
 	  editable: true,        
