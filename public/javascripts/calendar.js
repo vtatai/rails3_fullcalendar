@@ -65,7 +65,29 @@ $(document).ready(function() {
       'Create': function() { createEventFromDialog(); }
     }
   });
+  $('#all_day').change(function() {
+    checked = $(this).is(':checked');
+    if (checked) {
+      disableDialogTimeFields();
+    } else {
+      enableDialogTimeFields();
+    }
+  });
 });
+
+function disableDialogTimeFields() {
+  $('#start_time').val('');
+  $('#end_time').val('');
+  $('#start_time').attr('disabled', 'true');
+  $('#end_time').attr('disabled', 'true');
+}
+
+function enableDialogTimeFields() {
+  $('#start_time').removeAttr('disabled');
+  $('#end_time').removeAttr('disabled');
+  $('#start_time').val('10:00');
+  $('#end_time').val('11:00');
+}
 
 function updateEvent(the_event) {
   $.update(
@@ -85,16 +107,10 @@ function openEventDialog(date, allDay) {
   $('#end_date').val(date.dateFormat('DD/MM'));
   if (allDay) {
     $('#all_day').attr('checked', true);
-    $('#start_time').val('');
-    $('#end_time').val('');
-    $('#start_time').attr('disabled', 'true');
-    $('#end_time').attr('disabled', 'true');
+    disableDialogTimeFields();
   } else {
     $('#all_day').attr('checked', false);
-    $('#start_time').val(date.timeFormat('HH:mm'));
-    $('#end_time').val(date.timeFormat('HH:mm'));
-    $('#start_time').removeAttr('disabled');
-    $('#end_time').removeAttr('disabled');
+    enableDialogTimeFields();
   }
   $('#what').val('');
   $('#all_day_dialog').dialog('open');
@@ -120,12 +136,12 @@ function createEventFromDialog() {
 
     startTime = Date.parseFormat($('#start_time').val(), 'HH:mm');
     if (!validateDate(startTime)) return;
-    event.start.setHour(startTime.getHour());
+    event.start.setHours(startTime.getHours());
     event.start.setMinutes(startTime.getMinutes());
 
     endTime = Date.parseFormat($('#end_time').val(), 'HH:mm');
     if (!validateDate(endTime)) return;
-    event.end.setHour(endTime.getHour());
+    event.end.setHours(endTime.getHours());
     event.end.setMinutes(endTime.getMinutes());
   }
   event.title = $('#what').val();
