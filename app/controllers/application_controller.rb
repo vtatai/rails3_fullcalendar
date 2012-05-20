@@ -15,6 +15,9 @@ class ApplicationController < ActionController::Base
     ajax_request_types = ['text/javascript', 'application/json', 'text/xml']
     request.accepts.sort! { |x, y| ajax_request_types.include?(y.to_s) ? 1 : -1 } if request.xhr?
   end
-  
-  
+
+  def render_json_ok
+    response.headers['Cache-Control'] = 'no-cache'
+    render json: ''
+  end 
 end
