@@ -7,7 +7,7 @@ This fork adds to the original example:
 - jQuery UI dialog for editing events (TBD)
 - AJAX delete button when hovering over events
 
-Much of this code is based on the work done at http://paulthedutchman.nl/calendar_standalone/.
+Much of this code is based on the work done at http://paulthedutchman.nl/calendar_standalone/ and from the discussion at https://code.google.com/p/fullcalendar/issues/detail?id=162.
 
 ## Original Documentation
 
