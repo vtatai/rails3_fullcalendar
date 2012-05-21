@@ -5,6 +5,35 @@ $(document).ready(function() {
   var m = date.getMonth();
   var y = date.getFullYear();
 
+  var onMouseoverEvent = function(me, event) {
+    if (isEditable(event)) {
+      /*
+      *	SHOW DELETE ICON, ALSO POSSIBLE TO SHOW AN EDIT ICON HERE
+      */
+      var layer = 
+      '<div id="events-layer" class="fc-transparent" style="position:absolute; width:100%; height:100%; top:-1px; text-align:right; z-index:100">' +
+        '<a><img src="images/delete.png" title="delete" width="14" id="delbut'+event.id+'" border="0" style="padding-right:5px; padding-top:2px;" /></a>' +
+        '</div>';
+
+      me.append(layer);
+      $("#delbut"+event.id).hide();
+      $("#delbut"+event.id).fadeIn(200);
+      $("#delbut"+event.id).click(function() {
+        if(event.id) {
+          $.destroy({
+            url:"/events/" + event.id,
+            success:function(html){
+              $('#calendar').fullCalendar('removeEvents', event.id);
+            },
+            error: function(xhr, headers) {
+              alert('An error occurred while communicating with the server, please try again');
+            }
+          });
+        }
+      });
+    }
+  };
+
   $('#calendar').fullCalendar({
     editable: true,        
     header: {
@@ -46,7 +75,7 @@ $(document).ready(function() {
 
     // http://arshaw.com/fullcalendar/docs/mouse/eventClick/
     eventClick: function(event, jsEvent, view){
-      // would like a lightbox here.
+      return false;
     },
 
     dayClick: function(date, allDay, jsEvent, view) {
@@ -55,6 +84,14 @@ $(document).ready(function() {
       } else {
         alert('Unsupported');
       }
+    },
+
+    eventMouseover: function(event, jsEvent, view) {
+      onMouseoverEvent($(this), event);
+    },
+
+    eventMouseout: function(calEvent, domEvent) {
+      $("#events-layer").remove();
     }
   });
   $('#all_day_dialog').dialog({
@@ -120,11 +157,11 @@ function createEventFromDialog() {
   allDay = $('#all_day').is(':checked');
 
   event = {};
-  
+
   event.start = Date.parseFormat($('#start_date').val(), 'DD/MM');
   if (!validateDate(event.start)) return;
   event.start.setFullYear($('#calendar').fullCalendar('getDate').getFullYear());
-  
+
   event.end = Date.parseFormat($('#end_date').val(), 'DD/MM');
   if (!validateDate(event.end)) return;
   event.end.setFullYear($('#calendar').fullCalendar('getDate').getFullYear());
@@ -176,4 +213,8 @@ function validateDate(date) {
     return false;
   }
   return true;
+}
+
+function isEditable(event) {
+  return event.editable || (event.source || {}).editable || $('#calendar').data('fullCalendar').options['editable'];
 }

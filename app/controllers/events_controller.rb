@@ -95,6 +95,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(events_url) }
       format.xml  { head :ok }
+      format.js { render_json_ok }
     end
   end
 end
