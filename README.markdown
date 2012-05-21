@@ -1,6 +1,6 @@
-= Rails3 fullcalendar example =
+# Rails3 fullcalendar example
 
-== About This Fork ==
+## About This Fork
 
 This fork adds to the original example:
 - jQuery UI dialog for adding new events
@@ -9,7 +9,7 @@ This fork adds to the original example:
 
 Much of this code is based on the work done at http://paulthedutchman.nl/calendar_standalone/.
 
-== Original Documentation ==
+## Original Documentation
 
 This is an example application showing how to use the JQuery FullCalendar plugin with Rails3, following RESTful rails practices as closely as possible, and forgoing 'cleverness' for clarity.
 
