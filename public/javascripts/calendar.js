@@ -75,12 +75,13 @@ $(document).ready(function() {
 
     // http://arshaw.com/fullcalendar/docs/mouse/eventClick/
     eventClick: function(event, jsEvent, view){
+      openEventDialogEvent(event);
       return false;
     },
 
     dayClick: function(date, allDay, jsEvent, view) {
       if (allDay) {
-        openEventDialog(date, allDay);
+        openEventDialogDate(date, allDay);
       } else {
         alert('Unsupported');
       }
@@ -94,12 +95,12 @@ $(document).ready(function() {
       $("#events-layer").remove();
     }
   });
-  $('#all_day_dialog').dialog({
+  $('#event_dialog').dialog({
     title: 'New Event',
     autoOpen: false,
     buttons: {
       'Cancel': function() { $(this).dialog('close'); },
-      'Create': function() { createEventFromDialog(); }
+      'Save': function() { saveEventFromDialog(); }
     }
   });
   $('#all_day').change(function() {
@@ -119,44 +120,44 @@ function disableDialogTimeFields() {
   $('#end_time').attr('disabled', 'true');
 }
 
-function enableDialogTimeFields() {
+function enableDialogTimeFields(start, end) {
   $('#start_time').removeAttr('disabled');
   $('#end_time').removeAttr('disabled');
-  $('#start_time').val('10:00');
-  $('#end_time').val('11:00');
+  $('#start_time').val(start ? start.dateFormat('HH:mm') : '10:00');
+  $('#end_time').val(end ? end.dateFormat('HH:mm') : '11:00');
 }
 
-function updateEvent(the_event) {
-  $.update(
-    "/events/" + the_event.id,
-    { event: { title: the_event.title,
-      starts_at: "" + the_event.start,
-      ends_at: "" + the_event.end,
-      description: the_event.description
-    }
-    },
-    function (reponse) { alert('successfully updated task.'); }
-  );
+function openEventDialogEvent(event) {
+  openEventDialog(event.id, event.start, event.end, event.allDay, event.title, event.description);
 }
 
-function openEventDialog(date, allDay) {
-  $('#start_date').val(date.dateFormat('DD/MM'));
-  $('#end_date').val(date.dateFormat('DD/MM'));
+function openEventDialogDate(date, allDay) {
+  openEventDialog(null, date, date, allDay, '', '');
+}
+
+function openEventDialog(event_id, start, end, allDay, title, description) {
+  $('#event_id').val(event_id ? event_id : '');
+  $('#start_date').val(start.dateFormat('DD/MM'));
+  end = end ? end : start;
+  $('#end_date').val(end.dateFormat('DD/MM'));
   if (allDay) {
     $('#all_day').attr('checked', true);
     disableDialogTimeFields();
   } else {
     $('#all_day').attr('checked', false);
-    enableDialogTimeFields();
+    enableDialogTimeFields(start, end);
   }
-  $('#what').val('');
-  $('#all_day_dialog').dialog('open');
+  $('#what').val(title ? title : '');
+  $('#description').val(description ? description : '');
+  $('#event_dialog').dialog('open');
 }
 
-function createEventFromDialog() {
+function saveEventFromDialog() {
   allDay = $('#all_day').is(':checked');
 
   event = {};
+
+  event.id = $('#event_id').val();
 
   event.start = Date.parseFormat($('#start_date').val(), 'DD/MM');
   if (!validateDate(event.start)) return;
@@ -182,27 +183,63 @@ function createEventFromDialog() {
     event.end.setMinutes(endTime.getMinutes());
   }
   event.title = $('#what').val();
-  createEvent(event, function() {
-    $('#all_day_dialog').dialog('close');
-    $('#calendar').fullCalendar('refetchEvents');
-    $('#calendar').fullCalendar('rerenderEvents');
-  });
+  event.description = $('#description').val();
+
+  if (event.id && event.id !== '') {
+    updateEvent(event, closeAndReRenderDialog);
+  } else {
+    createEvent(event, closeAndReRenderDialog);
+  }
 }
 
-function createEvent(the_event, successCallback) {
+function closeAndReRenderDialog() {
+  $('#event_dialog').dialog('close');
+  $('#calendar').fullCalendar('refetchEvents');
+  $('#calendar').fullCalendar('rerenderEvents');
+}
+
+function updateEvent(the_event, successCallback, errorCallback) {
+  successCallback = successCallback || function () {};
+  errorCallback = errorCallback || function () {
+      alert('An error occurred while updating the event, please refresh the page and try again'); 
+  };
+  $.update(
+    "/events/" + the_event.id, { 
+      event: { 
+        title: the_event.title,
+        starts_at: "" + the_event.start,
+        ends_at: "" + the_event.end,
+        description: the_event.description,
+        all_day: "" + the_event.all_day
+      }
+    },
+    function (response) { 
+      successCallback(response);
+    }, 
+    function (response) {
+      errorCallback(response);
+    }
+  );
+}
+
+function createEvent(the_event, successCallback, errorCallback) {
+  successCallback = successCallback || function () {};
+  errorCallback = errorCallback || function () {
+      alert('An error occurred while creating the event, please refresh the page and try again'); 
+  };
   $.create(
     "/events",
     { event: { title: the_event.title,
       starts_at: "" + the_event.start,
       ends_at: "" + the_event.end,
-      description: the_event.description,
+      description: '' + the_event.description,
       all_day: "" + the_event.allDay
     }},
     function (response) {
-      successCallback();
+      successCallback(response);
     },
     function (response) {
-      alert('error');
+      errorCallback(response);
     }
   );
 }

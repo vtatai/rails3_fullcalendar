@@ -1,6 +1,6 @@
 <div id='calendar'></div>
 
-<div id='all_day_dialog' style="display:none;">
+<div id='event_dialog' style="display:none;">
   <p>
     Date: 
     <input type="text" id="start_date" maxlength="5" style="width: 50px"/>
@@ -15,5 +15,11 @@
     What: 
     <input type="text" id="what"/>
   </p>
+  <p>
+    Details: 
+    <input type="text" id="description"/>
+  </p>
+  <input type="hidden" id="event_id"/>
+
   All day: <input type="checkbox" id="all_day"/>
 </div>
