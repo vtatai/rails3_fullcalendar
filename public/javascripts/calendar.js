@@ -80,11 +80,7 @@ $(document).ready(function() {
     },
 
     dayClick: function(date, allDay, jsEvent, view) {
-      if (allDay) {
-        openEventDialogDate(date, allDay);
-      } else {
-        alert('Unsupported');
-      }
+      openEventDialogDate(date, allDay);
     },
 
     eventMouseover: function(event, jsEvent, view) {
@@ -121,10 +117,10 @@ function disableDialogTimeFields() {
 }
 
 function enableDialogTimeFields(start, end) {
+  $('#start_time').val(start ? start.timeFormat('HH:mm') : '10:00');
+  $('#end_time').val(end ? end.timeFormat('HH:mm') : '11:00');
   $('#start_time').removeAttr('disabled');
   $('#end_time').removeAttr('disabled');
-  $('#start_time').val(start ? start.dateFormat('HH:mm') : '10:00');
-  $('#end_time').val(end ? end.dateFormat('HH:mm') : '11:00');
 }
 
 function openEventDialogEvent(event) {

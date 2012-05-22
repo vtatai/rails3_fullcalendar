@@ -7,6 +7,10 @@ This fork adds to the original example:
 - jQuery UI dialog for editing events
 - AJAX delete button when hovering over events
 
+It also adds some new dependencies that the original did not use:
+- jQuery UI dialogs
+- DP_DateExtensions for formatting / parsing dates (http://depressedpress.com/javascript-extensions/dp_dateextensions/)
+
 Some of this code is based on the work done at http://paulthedutchman.nl/calendar_standalone/ and from the discussion at https://code.google.com/p/fullcalendar/issues/detail?id=162.
 
 ## Original Documentation
