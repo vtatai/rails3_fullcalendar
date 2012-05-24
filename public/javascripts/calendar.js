@@ -197,7 +197,7 @@ function closeAndReRenderDialog() {
 function updateEvent(the_event, successCallback, errorCallback) {
   successCallback = successCallback || function () {};
   errorCallback = errorCallback || function () {
-      alert('An error occurred while updating the event, please refresh the page and try again'); 
+    alert('An error occurred while updating the event, please refresh the page and try again'); 
   };
   $.update(
     "/events/" + the_event.id, { 
@@ -206,7 +206,7 @@ function updateEvent(the_event, successCallback, errorCallback) {
         starts_at: "" + the_event.start,
         ends_at: "" + the_event.end,
         description: the_event.description,
-        all_day: "" + the_event.all_day
+        all_day: "" + the_event.allDay
       }
     },
     function (response) { 
@@ -221,7 +221,7 @@ function updateEvent(the_event, successCallback, errorCallback) {
 function createEvent(the_event, successCallback, errorCallback) {
   successCallback = successCallback || function () {};
   errorCallback = errorCallback || function () {
-      alert('An error occurred while creating the event, please refresh the page and try again'); 
+    alert('An error occurred while creating the event, please refresh the page and try again'); 
   };
   $.create(
     "/events",
